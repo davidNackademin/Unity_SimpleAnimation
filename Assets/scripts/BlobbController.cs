@@ -11,10 +11,25 @@ public class BlobbController : MonoBehaviour {
     int rollTriggerHash = Animator.StringToHash("roll");
     float rollPressedTime = 0;
     int rollPressedHash = Animator.StringToHash("rollPressedTime");
+    int reactHash = Animator.StringToHash("react");
+
+    ReactStateBehaviour[] reactStateBehaviours;
+    RandomReactStateBeahaviour randomReactState;
+
+    [HideInInspector]
+    public GameObject particles;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
+
+        randomReactState = animator.GetBehaviour<RandomReactStateBeahaviour>();
+        randomReactState.blobbController = this;
+
+        reactStateBehaviours = animator.GetBehaviours<ReactStateBehaviour>();
+        for (int i = 0; i < reactStateBehaviours.Length; i++) {
+            reactStateBehaviours[i].blobbController = this;
+        }
     }
 
 
@@ -36,15 +51,15 @@ public class BlobbController : MonoBehaviour {
 
 
 
-    //private void OnMouseDown()
-    //{
-    //    // play roll animation
+    private void OnMouseDown()
+    {
+        // play roll animation
 
-    //    //animator.Play(rollHash);
+        //animator.Play(rollHash);
 
-    //    animator.SetTrigger(rollTriggerHash);
+        animator.SetTrigger(reactHash);
 
-    //}
+    }
 
 
 }
